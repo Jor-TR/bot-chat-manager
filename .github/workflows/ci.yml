@@ -18,7 +18,7 @@ jobs:
           node-version: '22'
           registry-url: "https://registry.npmjs.org"
       
-      - run: npm i
+      - run: npm i --production
       
       - run: npm run build
       
