@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es6",
+    "declaration": true,
+    "declarationDir": "./dist",
+    "declarationMap": false,
+    "sourceMap": false,
+    "emitDeclarationOnly": true,
+    "rootDir": "src", // 源码根目录
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "removeComments": true,
+    "moduleResolution": "node",
+    "lib": ["ES2022"]
+  },
+  "include": ["src/*"]
+}
