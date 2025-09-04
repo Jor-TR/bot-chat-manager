@@ -1,0 +1,48 @@
+{
+  "name": "bot-chat-manager",
+  "version": "1.0.3",
+  "description": "frontend state manager for AI bot chat, providing React hooks and state store",
+  "type": "module",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "vite build && tsc",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [
+    "AI 对话",
+    "AI 聊天",
+    "AI 聊天机器人",
+    "聊天机器人",
+    "AI chat",
+    "bot chat",
+    "chat state"
+  ],
+  "author": "bitter_william",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^11.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "@types/react": "^19.1.5",
+    "react": "^17.0.1",
+    "typescript": "^5.8.3",
+    "vite": "^7.1.4"
+  }
+}
