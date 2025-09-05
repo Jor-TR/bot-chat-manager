@@ -11,7 +11,6 @@ class BotChatState<M extends BubbleInfo = BubbleInfo> implements ChatCtx<M> {
 
   // 其他辅助数据/状态
   private subscribers = new Set<(bubbles: M[], sugs: string[]) => void>();
-  private allowNotify = true; // 是否允许向订阅者发送通知
   private currentRoundId = uuidv4(); // 当前对话轮次的唯一标识
   private timer?: NodeJS.Timeout;
 
@@ -32,9 +31,6 @@ class BotChatState<M extends BubbleInfo = BubbleInfo> implements ChatCtx<M> {
 
   // 通知订阅者
   private notify() {
-    if (!this.allowNotify) {
-      return;
-    }
     this.subscribers.forEach(subscriber => subscriber(this.getCurrentBubbles(), this.getCurrentSugs()));
   }
 
