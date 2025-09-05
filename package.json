@@ -1,6 +1,6 @@
 {
   "name": "bot-chat-manager",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "frontend state manager for AI bot chat, providing React hooks and state store",
   "type": "module",
   "main": "./dist/index.cjs.js",
