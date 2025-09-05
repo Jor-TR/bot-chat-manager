@@ -3,15 +3,18 @@
 [![npm version](https://img.shields.io/npm/v/bot-chat-manager.svg)](https://www.npmjs.com/package/bot-chat-manager)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-前端AI聊天机器人状态管理器，提供React Hooks和状态存储，用于管理AI对话界面的状态。
+前端 AI 机器人聊天状态管理器，用于管理 AI 对话界面的数据状态，提供以下两种使用方式：
+- React Hooks
+- 状态管理 store
 
 ## 特性
 
-- 🔄 完整的对话状态管理
-- 🪝 便捷的React Hooks集成
-- 🧩 灵活的消息气泡数据结构
-- 🔧 内置常用命令
-- 📦 轻量级，易于集成
+- 🔄 通用的对话状态管理
+- 🪝 便捷的 React Hooks 集成
+- 🧩 通过自定义命令驱动，具备高扩展性、低耦合度
+- 📝 完备的 Typescript 类型声明
+- 🧰 灵活的消息气泡数据结构（支持 ts 泛型）
+
 
 ## 安装
 
@@ -19,8 +22,6 @@
 npm install bot-chat-manager
 # 或
 yarn add bot-chat-manager
-# 或
-pnpm add bot-chat-manager
 ```
 
 ## 基本使用
@@ -39,7 +40,7 @@ const ChatComponent = () => {
     execute,           // 执行自定义命令
     COMMAND_CLEAR_ALL, // 内置命令：清空所有消息
     COMMAND_WITHDRAW_LAST_ROUND // 内置命令：撤回最后一轮对话
-  } = useBotChat('bot', 'user');
+  } = useBotChat('bot', 'user'); // 指定机器人与用户的角色标识
   
   // 发送消息示例
   const handleSend = async () => {
@@ -185,8 +186,8 @@ useBotChat<M extends BubbleInfo = BubbleInfo>(botRole: string, userRole: string,
 
 #### 参数
 
-- `botRole`: 机器人角色名称
-- `userRole`: 用户角色名称
+- `botRole`: 机器人角色标识
+- `userRole`: 用户角色标识
 - `initialBubbles`: 可选的初始气泡数组
 
 #### 返回值
