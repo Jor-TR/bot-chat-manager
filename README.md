@@ -39,11 +39,13 @@ const commandSendQuery = (userInput: string): Command =>
       chatCtx.addUserBubble(userInput);
       // 添加机器人加载气泡消息，并获得其气泡 id
       const loadingId = chatCtx.addBotLoadingBubble();
+      let loadingContent = '';
 
       // 发送请求并处理 SSE 响应
       const onSSEChunk = chunk => {
+        loadingContent += chunk.content;
         chatCtx.updateBubble(loadingId, {
-          content: chunk.content, // 追加 SSE 响应内容
+          content: loadingContent, // 追加 SSE 响应内容
           sugs: chunk.suggestions || [], // SSE 响应建议（bot-chat-manager 会自动判断是否应该展示该 sugs）
           status: 'incomplete', // SSE 未结束，机器人气泡状态为未完成
         });
@@ -266,7 +268,7 @@ interface ChatCtx<M extends BubbleInfo = BubbleInfo> {
   
   // 更新方法
   setBubbles: (bubbles: M[]) => void;
-  updateBubble: (id: string, assignedMsg: Partial<M>) => void;
+  updateBubble: (id: string, props: Partial<M>) => void;
   toggleChatRound: () => string;
   
   // 添加方法
