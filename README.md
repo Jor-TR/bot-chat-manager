@@ -112,12 +112,6 @@ import { BotChatState } from 'bot-chat-manager';
 
 const chatState = new BotChatState('bot', 'user', []);  // 指定机器人与用户的角色标识, 并（可选）初始化消息列表（空）
 
-// 添加消息
-chatState.addUserBubble('你好');
-
-// 获取当前消息
-const bubbles = chatState.getCurrentBubbles();
-
 const ChatComponent = () => {
   const [messages, setMessages] = useState<MessageInfo[]>([]);
   const [sugs, setSugs] = useState<string[]>([]);
