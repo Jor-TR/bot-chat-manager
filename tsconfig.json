@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "es6",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "declaration": true,
     "declarationDir": "./dist/types",
     "declarationMap": false,
@@ -12,7 +13,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "removeComments": true,
-    "moduleResolution": "node",
     "lib": ["ES2022"]
   },
   "include": ["src/*"]
