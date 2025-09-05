@@ -10,7 +10,7 @@
     ".": {
       "import": "./dist/index.es.js",
       "require": "./dist/index.cjs.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/types/index.d.ts"
     }
   },
   "files": [
@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "build": "vite build && tsc",
+    "watch": "vite build --watch",
     "postversion": "git push && git push --tags"
   },
   "keywords": [

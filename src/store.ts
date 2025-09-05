@@ -13,6 +13,7 @@ class BotChatState<M extends BubbleInfo = BubbleInfo> implements ChatCtx<M> {
   private subscribers = new Set<(bubbles: M[], sugs: string[]) => void>();
   private allowNotify = true; // 是否允许向订阅者发送通知
   private currentRoundId = uuidv4(); // 当前对话轮次的唯一标识
+  private timer?: NodeJS.Timeout;
 
   constructor(botRole: string, userRole: string, initialBubbles: M[] = []) {
     this.bubbles = initialBubbles;
@@ -37,12 +38,11 @@ class BotChatState<M extends BubbleInfo = BubbleInfo> implements ChatCtx<M> {
     this.subscribers.forEach(subscriber => subscriber(this.getCurrentBubbles(), this.getCurrentSugs()));
   }
 
-  private closeNotify() {
-    this.allowNotify = false;
-  }
-
-  private openNotify() {
-    this.allowNotify = true;
+  private debouncedNotify() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.notify();
+    }, 0);
   }
 
   private genLoadingBubble(id?: string): M {
@@ -84,7 +84,7 @@ class BotChatState<M extends BubbleInfo = BubbleInfo> implements ChatCtx<M> {
   // 但凡需要变更 bubbles，都得使用 setBubbles 方法
   setBubbles(bubbles: M[]) {
     this.bubbles = bubbles;
-    this.notify();
+    this.debouncedNotify();
   }
 
   updateBubble(id: string, assignedMsg: Partial<M>) {
@@ -160,10 +160,7 @@ class BotChatState<M extends BubbleInfo = BubbleInfo> implements ChatCtx<M> {
    * 执行命令
   */
   async execute(command: Command<M>) {
-    this.closeNotify(); // 执行命令时，不应该触发通知
     await command(this);
-    this.openNotify(); // 执行完命令后，恢复变更通知
-    this.notify();
   }
 }
 
