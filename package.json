@@ -1,6 +1,6 @@
 {
   "name": "bot-chat-manager",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "frontend state manager for AI bot chat, providing React hooks and state store | 前端 AI 对话状态管理工具",
   "repository": {
     "type": "git",
