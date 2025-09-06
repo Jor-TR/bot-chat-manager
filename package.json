@@ -1,7 +1,11 @@
 {
   "name": "bot-chat-manager",
   "version": "1.0.14",
-  "description": "frontend state manager for AI bot chat, providing React hooks and state store",
+  "description": "frontend state manager for AI bot chat, providing React hooks and state store | 前端 AI 对话状态管理工具",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jor-TR/bot-chat-manager.git"
+  },
   "type": "module",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
@@ -23,13 +27,14 @@
     "postversion": "git push && git push --tags"
   },
   "keywords": [
-    "AI 对话",
-    "AI 聊天",
-    "AI 聊天机器人",
-    "聊天机器人",
-    "AI chat",
-    "bot chat",
-    "chat state"
+    "AI chat state",
+    "bot chat state",
+    "chat state management",
+    "AI对话",
+    "AI聊天",
+    "对话状态管理",
+    "聊天状态管理",
+    "机器人对话"
   ],
   "author": "bitter_william",
   "license": "MIT",

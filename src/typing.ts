@@ -4,7 +4,7 @@ export interface BubbleInfo {
   id?: string; // 消息气泡的唯一标识
   role: string; // 发送当前消息气泡的角色
   content: string; // 消息气泡的内容
-  createAt?: number; // 时间戳
+  ts?: number; // 时间戳
   status?: BubbleStatus; // 消息气泡的状态
   roundId?: string; // 用于标识一轮对话（query + 若干 response），一轮对话中的每一条消息都会有相同的 roundId
   sugs?: string[]; // 消息气泡的建议回复列表（只有当最后一条气泡是机器人发出时，才会显示其 sugs）
