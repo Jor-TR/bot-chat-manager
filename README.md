@@ -3,62 +3,62 @@
 [![npm version](https://img.shields.io/npm/v/bot-chat-manager.svg)](https://www.npmjs.com/package/bot-chat-manager)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[简体中文](README_zh.md) 
+[English](README_en.md) 
 
-Frontend AI bot chat state manager for managing AI conversation interface data states and driving conversation component rendering, providing the following two usage methods:
+前端 AI 机器人聊天状态管理器，用于管理 AI 对话界面的数据状态并驱动对话组件渲染，提供以下两种使用方式：
 - React Hooks
-- State management store
+- 状态管理 store
 
-## Featuresnpm config get registry
+## 特性
 
-- 🔄 Universal conversation state management
-- 🪝 Convenient React Hooks integration
-- 🧩 Driven by custom commands, with high extensibility and low coupling
-- 📝 Complete TypeScript type declarations
-- 🧰 Flexible message bubble data structure (supports TypeScript generics)
+- 🔄 通用的对话状态管理
+- 🪝 便捷的 React Hooks 集成
+- 🧩 通过自定义命令驱动，具备高扩展性、低耦合度
+- 📝 完备的 Typescript 类型声明
+- 🧰 灵活的消息气泡数据结构（支持 ts 泛型）
 
 
-## Installation
+## 安装
 
 ```bash
 npm install bot-chat-manager
-# or
+# 或
 yarn add bot-chat-manager
 ```
 
-## Basic Usage: React Hooks
+## 基本使用：React Hooks
 
 ```tsx
 import React, { useState } from 'react';
 import useBotChat, { Command } from 'bot-chat-manager';
 
-// Custom command: Send user message and receive bot reply
+// 自定义命令：发送用户消息并接收机器人回复
 const commandSendQuery = (userInput: string): Command => 
   async chatCtx => {
-      // Mark the beginning of a new round of conversation, after which all messages will be considered as one round of conversation until the next toggleChatRound is executed (manually dividing the message list into rounds, making it easy to implement certain features, such as withdrawing the last round of conversation)
+      // 标记新一轮对话开始，此后所有消息都将被视为一轮对话，直到执行下一个 toggleChatRound (手动给消息列表划分轮次，便于实现某些功能，比如撤销最后一轮对话)
       chatCtx.toggleChatRound();
-      // Add user bubble message
+      // 添加用户气泡消息
       chatCtx.addUserBubble(userInput);
-      // Add bot loading bubble message and get its bubble id
+      // 添加机器人加载气泡消息，并获得其气泡 id
       const loadingId = chatCtx.addBotLoadingBubble();
       let loadingContent = '';
 
-      // Send request and handle SSE response
+      // 发送请求并处理 SSE 响应
       const onSSEChunk = chunk => {
         loadingContent += chunk.content;
         chatCtx.updateBubble(loadingId, {
-          content: loadingContent, // Append SSE response content
-          sugs: chunk.suggestions || [], // SSE response suggestions (bot-chat-manager will automatically determine whether to display these suggestions)
-          status: 'incomplete', // SSE not finished, bot bubble status is incomplete
+          content: loadingContent, // 追加 SSE 响应内容
+          sugs: chunk.suggestions || [], // SSE 响应建议（bot-chat-manager 会自动判断是否应该展示该 sugs）
+          status: 'incomplete', // SSE 未结束，机器人气泡状态为未完成
         });
       };
       const onCloseSSE = () => {
-        chatCtx.updateBubble(loadingId, { // SSE finished, set bot bubble status to complete
+        chatCtx.updateBubble(loadingId, { // SSE 结束，将机器人气泡状态设置为完成
           status: 'complete',
         });
       };
       const onSSEError = () => {
-        chatCtx.updateBubble(loadingId, { // SSE error, set bot bubble status to error
+        chatCtx.updateBubble(loadingId, { // SSE 错误，将机器人气泡状态设置为错误
           status: 'error',
         });
       };
@@ -68,21 +68,21 @@ const commandSendQuery = (userInput: string): Command =>
 
 const ChatComponent = () => {
   
-  // Chat manager
+  // 聊天管理器
   const { 
-    bubbles,           // Current message bubble states, including message content, suggested replies, status, etc.
-    sugs,              // Current suggestions to display
-    execute,           // Execute custom commands, driving bubbles updates
-    COMMAND_CLEAR_ALL, // Built-in command: Clear all messages
-    COMMAND_WITHDRAW_LAST_ROUND // Built-in command: Withdraw the last round of conversation
-  } = useBotChat('bot', 'user'); // Specify bot and user role identifiers
+    bubbles,           // 当前所有消息气泡状态，包含消息内容、建议回复、状态等
+    sugs,              // 当前需要显示的 sugs
+    execute,           // 执行自定义命令，驱动 bubbles 更新
+    COMMAND_CLEAR_ALL, // 内置命令：清空所有消息
+    COMMAND_WITHDRAW_LAST_ROUND // 内置命令：撤回最后一轮对话
+  } = useBotChat('bot', 'user'); // 指定机器人与用户的角色标识
   
-  // Send message example
+  // 发送消息示例
   const handleSend = async (userInput: string) => {
-    await execute(commandSendQuery(userInput)); // Execute command: Initiate conversation
+    await execute(commandSendQuery(userInput)); // 执行命令：发起对话
   };
 
-  // Withdraw the last round of conversation
+  // 撤回最后一轮对话
   const handleWithdraw = () => {
     execute(COMMAND_WITHDRAW_LAST_ROUND);
   };
@@ -97,7 +97,7 @@ const ChatComponent = () => {
       <div className="input-area">
         <UserInput
           onSend={handleSend}
-          placeholder="Enter message..."
+          placeholder="输入消息..."
         />
       </div>
     </div>
@@ -107,14 +107,14 @@ const ChatComponent = () => {
 export default ChatComponent;
 ```
 
-## Basic Usage: State Management Store
+## 基本使用：状态管理 store
 
-If your project is not suitable for using React Hooks, you can directly use the `BotChatState` class to generate a store instance, and then use this instance in your component to manage chat state
+如果您的项目不适合使用 React Hooks，可以直接使用`BotChatState` class 来生成 store 实例，然后在组件中使用该实例来管理聊天状态
 
 ```tsx
 import { BotChatState } from 'bot-chat-manager';
 
-const chatState = new BotChatState('bot', 'user', []);  // Specify bot and user role identifiers, and (optionally) initialize the message list (empty)
+const chatState = new BotChatState('bot', 'user', []);  // 指定机器人与用户的角色标识, 并（可选）初始化消息列表（空）
 
 const ChatComponent = () => {
   const [messages, setMessages] = useState<MessageInfo[]>([]);
@@ -131,12 +131,12 @@ const ChatComponent = () => {
     };
   }, []);
   
-  // Send message example
+  // 发送消息示例
   const handleSend = async (userInput: string) => {
-    await chatState.execute(commandSendQuery(userInput)); // Execute command: Initiate conversation
+    await chatState.execute(commandSendQuery(userInput)); // 执行命令：发起对话
   };
 
-  // Withdraw the last round of conversation
+  // 撤回最后一轮对话
   const handleWithdraw = () => {
     chatState.execute(COMMAND_WITHDRAW_LAST_ROUND);
   };
@@ -150,7 +150,7 @@ const ChatComponent = () => {
       <div className="input-area">
         <UserInput
           onSend={handleSend}
-          placeholder="Enter message..."
+          placeholder="输入消息..."
         />
       </div>
     </div>
@@ -158,14 +158,14 @@ const ChatComponent = () => {
 };
 ```
 
-## Advanced Usage: Custom Message Bubble Types
+## 进阶用法: 自定义消息气泡类型
 
-You can extend the default message bubble type `BubbleInfo`, add custom fields, and use the new type as a generic parameter:
+您可以扩展默认的消息气泡类型 `BubbleInfo`，添加自定义字段，并将新的类型用作泛型参数：
 
 ```tsx
 import useBotChat, { BubbleInfo } from 'bot-chat-manager';
 
-// Extend bubble type
+// 扩展气泡类型
 interface CustomBubble extends BubbleInfo {
   isHighlighted?: boolean;
   attachments?: string[];
@@ -173,10 +173,10 @@ interface CustomBubble extends BubbleInfo {
 
 const ChatComponent = () => {
 
-  // Use custom type
+  // 使用自定义类型
   const { bubbles, sugs, execute } = useBotChat<CustomBubble>('bot', 'user');
 
-  // Custom command: Add a user attachment message
+  // 自定义命令：添加一条用户附件消息
   const commandAddUserAttachmentMessage = (userInput: string, files: string[]): Command => 
     chatCtx => {
       chatCtx.addUserBubble(userInput, {
@@ -185,7 +185,7 @@ const ChatComponent = () => {
       });
     };
 
-  // Send message example
+  // 发送消息示例
   const handleSendMulti = async (userInput: string, files: string[]) => {
     await execute(commandAddUserAttachmentMessage(userInput, files));
   };
@@ -200,7 +200,7 @@ const ChatComponent = () => {
       <div className="input-area">
         <UserInput
           onSendMulti={handleSendMulti}
-          placeholder="Enter message..."
+          placeholder="输入消息..."
         />
       </div>
     </div>
@@ -209,7 +209,7 @@ const ChatComponent = () => {
 
 ```
 
-## Type Definitions
+## 类型定义
 
 ### useBotChat
 
@@ -217,32 +217,32 @@ const ChatComponent = () => {
 useBotChat<M extends BubbleInfo = BubbleInfo>(botRole: string, userRole: string, initialBubbles?: M[])
 ```
 
-#### Parameters
+#### 参数
 
-- `botRole`: Bot role identifier
-- `userRole`: User role identifier
-- `initialBubbles`: Optional initial bubble array
+- `botRole`: 机器人角色标识
+- `userRole`: 用户角色标识
+- `initialBubbles`: 可选的初始气泡数组
 
-#### Return Values
+#### 返回值
 
-- `bubbles`: Current message bubble array
-- `sugs`: Current suggested reply array
-- `execute`: Function to execute commands
-- `COMMAND_WITHDRAW_LAST_ROUND`: Built-in command, withdraw the last round of conversation
-- `COMMAND_CLEAR_ALL`: Built-in command, clear all messages
+- `bubbles`: 当前所有消息气泡数组
+- `sugs`: 当前建议回复数组
+- `execute`: 执行命令的函数
+- `COMMAND_WITHDRAW_LAST_ROUND`: 内置命令，撤回最后一轮对话
+- `COMMAND_CLEAR_ALL`: 内置命令，清空所有消息
 
 ### BubbleInfo
 
 ```tsx
 interface BubbleInfo {
-  id?: string;           // Unique identifier for the message bubble
-  role: string;          // Role of the sender of the current message bubble
-  content: string;       // Content of the message bubble
-  ts?: number;     // Timestamp(ms)
-  status?: BubbleStatus; // Status of the message bubble
-  roundId?: string;      // Used to identify a round of conversation
-  sugs?: string[];       // List of suggested replies for the message bubble
-  [x: string]: any;      // Other custom fields
+  id?: string;           // 消息气泡的唯一标识
+  role: string;          // 发送当前消息气泡的角色
+  content: string;       // 消息气泡的内容
+  ts?: number;     // 时间戳(毫秒)
+  status?: BubbleStatus; // 消息气泡的状态
+  roundId?: string;      // 用于标识一轮对话
+  sugs?: string[];       // 消息气泡的建议回复列表
+  [x: string]: any;      // 其他自定义字段
 }
 
 type BubbleStatus = 'loading' | 'incomplete' | 'complete' | 'error';
@@ -258,28 +258,28 @@ type Command<M extends BubbleInfo = BubbleInfo> = (chatCtx: ChatCtx<M>) => void 
 
 ```tsx
 interface ChatCtx<M extends BubbleInfo = BubbleInfo> {
-  // Query methods
+  // 查询方法
   getCurrentBubbles: () => M[];
   getCurrentSugs: () => string[];
   getBubble: (id: string) => M | undefined;
   
-  // Delete methods
+  // 删除方法
   deleteBubble: (id: string) => void;
   clearBubbles: () => void;
   withdrawLastRound: () => void;
   
-  // Update methods
+  // 更新方法
   setBubbles: (bubbles: M[]) => void;
   updateBubble: (id: string, props: Partial<M>) => void;
   toggleChatRound: () => string;
   
-  // Add methods
+  // 添加方法
   addUserBubble: (content: string, props?: Partial<M>) => string;
   addBotBubble: (content: string, props?: Partial<M>) => string;
   addBotLoadingBubble: (props?: Partial<M>) => string;
 }
 ```
 
-## License
+## 许可证
 
 [MIT](LICENSE)
